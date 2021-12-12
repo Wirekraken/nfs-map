@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>map</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="leaflet.rotatedMarker.js"></script>
+        <!-- <script src="leaflet-polygon.fillPattern.js"></script> -->
+    </head>
+    <body>
+        <div id="map"></div>
+        
+        <div id="map-mode-block">
+            <div style="font-size:12px; color:#ddd; margin-left: 5px">Map Mode:</div>
+            <input id="freeroam-radio" class="control" data-mode="freeroam" type="radio" name="radio">
+            <label for="freeroam-radio">Freeroam</label>
+            <span></span>
+            <input id="team-races-radio" class="control" data-mode="team-races" type="radio" name="radio">
+            <label for="team-races-radio">Team Racing</label>
+        </div>
+        <div id="team-races-info-block">
+            <div id="team-races-info">
+                <div>TR Season: 12</div>
+                <div>16.12.2021 - 16.02.2022</div>
+            </div>
+            <input type="checkbox" id="show-stat">
+            <label for="show-stat" id="show-stat-label">Show Stats</label>
+        </div>
+        
+        <div id="team-races-stat">
+            <div class="team-races-stat-list">
+               <img class="stat-team-logo" src="logos/Rotor4.png" width="26px">
+                <div class="stat-team-name">LSDTEAM</div>
+                <div class="stat-team-wins">102</div>
+                <div class="stat-team-loses">43</div>
+                <div class="stat-team-points">433.4</div> 
+            </div>
+            <div class="team-races-stat-list">
+               <img class="stat-team-logo" src="logos/Rotor4.png" width="26px">
+                <div class="stat-team-name">MERCY</div>
+                <div class="stat-team-wins">142</div>
+                <div class="stat-team-loses">13</div>
+                <div class="stat-team-points">333.4</div> 
+            </div>
+
+        </div>
+
+        <div id="settings">
+            <div style="margin: 3px 3px 0 6px;">OPTIONS</div>
+            <div style="text-align: center;">Current Rotation:</div>
+            <div id="rotation-control">
+                <input type="radio" id="rotation-selector-1" class="control rotation-selector" name="rotation-selector"/>
+                <label for="rotation-selector-1">1</label>
+                <input type="radio" id="rotation-selector-2" class="control rotation-selector" name="rotation-selector"/>
+                <label for="rotation-selector-2">2</label>
+                <input type="radio" id="rotation-selector-3" class="control rotation-selector" name="rotation-selector"/>
+                <label for="rotation-selector-3">3</label>
+            </div>
+            
+            <div id="list-options">
+                <input class='control toggle' id='toggle-races' type="checkbox" checked>
+                <label for="toggle-races">SHOW RACES</label>
+                <div id="freeroam-list-options">
+                    <input class='control toggle' id='toggle-others' type="checkbox" checked>
+                    <label for="toggle-others" id='toggle-others-label' >SHOW OTHERS</label>
+                </div>
+                <div id="team-races-list-options">
+                    <input class='control toggle' id='toggle-regions' type="checkbox" checked>
+                    <label for="toggle-regions" id='toggle-regions-label'>SHOW REGIONS</label>
+                    <input class='control toggle' id='toggle-regions-active' type="checkbox">
+                    <label for="toggle-regions-active" id='toggle-regions-active-label'>FOCUS ON REGIONS</label>
+                    <input class='control toggle' id='toggle-team-logos' type="checkbox">
+                    <label for="toggle-team-logos" id='toggle-team-logos-label'>SHOW TEAM LOGOS</label>
+                </div>
+                <input class='control toggle' checked="" id='toggle-players' type="checkbox">
+                <label for="toggle-players">SHOW PLAYERS</label>
+            </div>
+        </div>
+
+        <div id='event-tooltip' hidden></div>
+
+        <div id='region-tooltip' hidden="">
+            <div class="area-info-block">
+                <div class="marquee-block">
+                    <span id='region-name'>Downtown Rosewood</span>
+                </div>
+                <div class="area-score">48.6</div>
+            </div>
+                <div>
+                    <span class='time'>18h</span><span class="time-score">+3.79</span>
+                </div>
+                <img class='logo-owner-area' src="logos/Kings.png" width="56px">
+                <span class="owner-score">21.1</span>
+                <img class='logo-challanger-area' src="logos/Scorpios.png" width="56px">
+                <span class="challenger-score">18.6</span>
+                <div class='race-info-block'>
+                    <div class='race-info'>
+                        <img class="logo-owner-race" src="logos/Kings.png" width="28px">
+                        <div>Savannah Street<span class='point-race'>6.7</span></div>
+                    </div>
+                    <div class='race-info'>
+                        <img class="logo-owner-race" src="logos/Bushido.png" width="28px">
+                        <div>Savannah Street<span class='point-race'>8.9</span></div>
+                    </div>
+                    <div class='race-info'>
+                        <img class="logo-owner-race" src="logos/Scorpios.png" width="28px">
+                        <div>Heritage & Diamond<span class='point-race'>12.6</span></div>
+                    </div>
+                    <div class='race-info'>
+                        <img class="logo-owner-race" src="logos/Scorpios.png" width="28px">
+                        <div>West Park & Forest<span class='point-race'>6.0</span></div>
+                    </div>
+                    <div class='race-info'>
+                        <img class="logo-owner-race" src="logos/Kings.png" width="28px">
+                        <div>Bond & Country Club<span class='point-race'>14.4</span></div>
+                    </div>
+                </div>
+        </div>
+
+
+        <div id="list-players-block" hidden>
+            <div id="count-players">
+                <span>0</span>
+                <span> IN FREEROAM</span>
+            </div>
+            <div id="list-players">
+                <!-- <div class="entry">ACHILLES</div><div class="entry">SENIOR</div><div class="entry">QUASAR</div> -->
+                <div class="entry-player">PLAYER1</div>
+                <div class="entry-player">PLAYER2</div>
+                <div class="entry-player">PLAYER3</div>
+                <div class="entry-player">PLAYER4</div>
+                <div class="entry-player">PLAYER5</div>
+                <div class="entry-player">PLAYER6</div>
+                <div class="entry-player">PLAYER7</div>
+                <div class="entry-player">PLAYER8</div>
+                <div class="entry-player">PLAYER9</div>
+                <div class="entry-player">PLAYER10</div>
+                <div class="entry-player">PLAYER11</div>
+                <div class="entry-player">PLAYER12</div>
+                <div class="entry-player">123456789101112</div>
+                <div class="entry-player">PLAYER14</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+                <div class="entry-player">PLAYER</div>
+            </div>
+        </div>
+        <script src="interface.js"></script>
+        <script src="render.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>
